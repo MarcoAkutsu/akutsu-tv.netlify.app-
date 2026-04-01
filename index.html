@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Akutsu TV | RuneScape 3 Brasil | Lives RS3</title>
-
   <meta name="description" content="Akutsu TV (AkutsuTV / Akutsu_TV) é um streamer brasileiro focado em RuneScape 3 (RS3). Lives frequentes na Twitch, Kick e YouTube com dicas, money making, bosses e conteúdo para iniciantes e avançados.">
   <meta name="keywords" content="Akutsu TV, AkutsuTV, Akutsu_TV, RuneScape 3, RS3, RuneScape 3 Brasil, lives RS3, money making RS3, bosses RS3, guia RS3, streamer RuneScape">
   <meta name="robots" content="index, follow">
@@ -51,9 +50,7 @@
       --radius: 14px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -212,13 +209,8 @@
       font-size: 15px;
     }
 
-    .status-live {
-      color: var(--green);
-    }
-
-    .status-offline {
-      color: #ffb347;
-    }
+    .status-live { color: var(--green); }
+    .status-offline { color: #ffb347; }
 
     .platforms {
       display: flex;
@@ -260,8 +252,14 @@
       font-weight: bold;
     }
 
-    .video-card a:hover {
-      text-decoration: underline;
+    .video-card a:hover { text-decoration: underline; }
+
+    .thumb {
+      width: 100%;
+      max-width: 560px;
+      border-radius: 12px;
+      display: block;
+      margin-bottom: 14px;
     }
 
     .player-wrap {
@@ -299,22 +297,10 @@
     }
 
     @media (max-width: 640px) {
-      .hero {
-        padding-top: 100px;
-      }
-
-      .hero h1 {
-        font-size: 42px;
-      }
-
-      .hero p {
-        font-size: 17px;
-      }
-
-      .avatar-link img {
-        width: 60px;
-        height: 60px;
-      }
+      .hero { padding-top: 100px; }
+      .hero h1 { font-size: 42px; }
+      .hero p { font-size: 17px; }
+      .avatar-link img { width: 60px; height: 60px; }
     }
   </style>
 </head>
@@ -372,29 +358,20 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-label">Status da live</div>
-        <div class="stat-value status-offline">Online/Offline automático</div>
-        <div class="stat-note">
-          Para detectar isso automaticamente de forma confiável, precisa integrar a API da Twitch.
-          Por enquanto, o player abaixo continua sendo a forma mais segura de mostrar sua live.
-        </div>
+        <div id="liveStatus" class="stat-value">Carregando...</div>
+        <div id="liveNote" class="stat-note">Consultando Twitch.</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-label">Seguidores</div>
-        <div class="stat-value">Contador automático</div>
-        <div class="stat-note">
-          Para puxar o número real de seguidores da Twitch, também precisa de API.
-          A seção já está pronta para receber isso depois.
-        </div>
+        <div id="followersCount" class="stat-value">Carregando...</div>
+        <div class="stat-note">Total atual de seguidores do canal.</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-label">Último vídeo</div>
-        <div class="stat-value">Atualização automática</div>
-        <div class="stat-note">
-          Para mostrar o vídeo mais recente do YouTube sozinho, é necessário integrar a API do YouTube.
-          A estrutura abaixo já deixa isso organizado no site.
-        </div>
+        <div id="latestVideoTitle" class="stat-value" style="font-size:22px;">Carregando...</div>
+        <div id="latestVideoMeta" class="stat-note">Consultando YouTube.</div>
       </div>
     </div>
 
@@ -417,12 +394,9 @@
 
     <h2 style="margin-top:50px;">🎥 Último vídeo</h2>
     <div class="video-card">
-      <p style="margin-top:0;">
-        Essa área está pronta para virar automática com API do YouTube.
-      </p>
-      <p style="margin-bottom:0;">
-        Enquanto isso, você pode apontar para seu canal aqui:
-        <a href="https://www.youtube.com/@akutsu_tv" target="_blank">Ver canal no YouTube</a>
+      <img id="latestVideoThumb" class="thumb" src="" alt="" style="display:none;">
+      <p id="latestVideoLinkWrap" style="margin:0;">
+        <a id="latestVideoLink" href="https://www.youtube.com/@akutsu_tv" target="_blank">Ver canal no YouTube</a>
       </p>
     </div>
 
@@ -443,6 +417,100 @@
   <footer>
     © 2026 Akutsu TV - RuneScape 3 Brasil
   </footer>
+
+  <script>
+    const YT_API_KEY = "COLE_SUA_YOUTUBE_API_KEY_AQUI";
+
+    async function loadTwitchData() {
+      try {
+        const res = await fetch("/api/twitch-status");
+        if (!res.ok) throw new Error("Falha ao consultar Twitch");
+        const data = await res.json();
+
+        const liveStatus = document.getElementById("liveStatus");
+        const liveNote = document.getElementById("liveNote");
+        const followersCount = document.getElementById("followersCount");
+
+        if (data.live) {
+          liveStatus.textContent = "ONLINE";
+          liveStatus.className = "stat-value status-live";
+          liveNote.textContent = data.title
+            ? data.title
+            : "Live ao vivo agora na Twitch.";
+        } else {
+          liveStatus.textContent = "OFFLINE";
+          liveStatus.className = "stat-value status-offline";
+          liveNote.textContent = "No momento, a live está offline.";
+        }
+
+        followersCount.textContent = typeof data.followers === "number"
+          ? data.followers.toLocaleString("pt-BR")
+          : "Indisponível";
+      } catch (error) {
+        document.getElementById("liveStatus").textContent = "Indisponível";
+        document.getElementById("liveStatus").className = "stat-value status-offline";
+        document.getElementById("liveNote").textContent = "Não foi possível consultar a Twitch agora.";
+        document.getElementById("followersCount").textContent = "Indisponível";
+      }
+    }
+
+    async function loadYouTubeData() {
+      if (!YT_API_KEY || YT_API_KEY.includes("COLE_SUA_YOUTUBE_API_KEY_AQUI")) {
+        document.getElementById("latestVideoTitle").textContent = "Configure a API key";
+        document.getElementById("latestVideoMeta").textContent = "Adicione sua YouTube API key no código.";
+        return;
+      }
+
+      try {
+        const channelRes = await fetch(
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=@akutsu_tv&key=${YT_API_KEY}`
+        );
+        const channelData = await channelRes.json();
+
+        if (!channelData.items || !channelData.items.length) {
+          throw new Error("Canal não encontrado");
+        }
+
+        const channel = channelData.items[0];
+        const channelId = channel.id;
+
+        const searchRes = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
+        );
+        const searchData = await searchRes.json();
+
+        if (!searchData.items || !searchData.items.length) {
+          throw new Error("Nenhum vídeo encontrado");
+        }
+
+        const video = searchData.items[0];
+        const title = video.snippet.title;
+        const publishedAt = new Date(video.snippet.publishedAt);
+        const thumb = video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url || "";
+        const videoId = video.id.videoId;
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+        document.getElementById("latestVideoTitle").textContent = title;
+        document.getElementById("latestVideoMeta").textContent =
+          `Publicado em ${publishedAt.toLocaleDateString("pt-BR")}`;
+
+        const thumbEl = document.getElementById("latestVideoThumb");
+        thumbEl.src = thumb;
+        thumbEl.alt = title;
+        thumbEl.style.display = thumb ? "block" : "none";
+
+        const linkEl = document.getElementById("latestVideoLink");
+        linkEl.href = videoUrl;
+        linkEl.textContent = "Assistir último vídeo no YouTube";
+      } catch (error) {
+        document.getElementById("latestVideoTitle").textContent = "Indisponível";
+        document.getElementById("latestVideoMeta").textContent = "Não foi possível consultar o YouTube agora.";
+      }
+    }
+
+    loadTwitchData();
+    loadYouTubeData();
+  </script>
 
 </body>
 </html>

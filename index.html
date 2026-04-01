@@ -441,7 +441,7 @@
   </footer>
 
   <script>
-    const YT_API_KEY = "SUA_API_KEY_AQUI";
+    const YT_API_KEY = "SAIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0";
 
     async function loadTwitchData() {
       try {
@@ -475,7 +475,7 @@
     }
 
     async function loadYouTubeData() {
-      if (!YT_API_KEY || YT_API_KEY.includes("SUA_API_KEY_AQUI")) {
+      if (!YT_API_KEY || YT_API_KEY.includes("AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0")) {
         document.getElementById("latestVideoTitle").textContent = "Configure a API key";
         document.getElementById("latestVideoMeta").textContent = "Adicione sua YouTube API key no código.";
         return;
@@ -483,7 +483,7 @@
 
       try {
         const channelRes = await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=@akutsu_tv&key=${YT_API_KEY}`
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=@akutsu_tv&key=${AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0}`
         );
         const channelData = await channelRes.json();
 
@@ -495,7 +495,7 @@
         const channelId = channel.id;
 
         const searchRes = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=1&key=${AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0}`
         );
         const searchData = await searchRes.json();
 

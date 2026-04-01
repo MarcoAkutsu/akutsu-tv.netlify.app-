@@ -7,18 +7,24 @@
   <title>Akutsu TV | RuneScape 3 Brasil | Lives RS3</title>
 
   <meta name="description" content="Akutsu TV (AkutsuTV / Akutsu_TV) é um streamer brasileiro focado em RuneScape 3 (RS3). Lives frequentes na Twitch, Kick e YouTube com dicas, money making, bosses e conteúdo para iniciantes e avançados.">
-
+  <meta name="keywords" content="Akutsu TV, AkutsuTV, Akutsu_TV, RuneScape 3, RS3, RuneScape 3 Brasil, lives RS3, money making RS3, bosses RS3, guia RS3, streamer RuneScape">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://akutsu.tv/">
 
-  <!-- Google Schema -->
+  <meta property="og:title" content="Akutsu TV | RuneScape 3 Brasil | Lives RS3">
+  <meta property="og:description" content="Streamer brasileiro focado em RuneScape 3 (RS3), com lives na Twitch, Kick e YouTube.">
+  <meta property="og:url" content="https://akutsu.tv/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://akutsu.tv/avatar">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Akutsu TV",
     "alternateName": ["AkutsuTV", "Akutsu_TV"],
-    "url": "https://akutsu.tv",
+    "url": "https://akutsu.tv/",
+    "image": "https://akutsu.tv/avatar",
     "sameAs": [
       "https://www.twitch.tv/akutsu_tv",
       "https://www.youtube.com/@akutsu_tv",
@@ -30,60 +36,195 @@
   </script>
 
   <style>
+    :root {
+      --bg: #0e0e10;
+      --bg-soft: #18181b;
+      --bg-soft-2: #1f1f23;
+      --text: #ffffff;
+      --muted: #b3b3b3;
+      --purple: #9146ff;
+      --purple-2: #a970ff;
+      --red: #ff3b3b;
+      --green: #53fc18;
+      --youtube: #ff0000;
+      --shadow: 0 0 20px rgba(145, 70, 255, 0.25);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #0e0e10;
-      color: white;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .avatar-link {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 999;
+      display: inline-block;
+    }
+
+    .avatar-link img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--purple);
+      box-shadow: 0 0 18px rgba(145, 70, 255, 0.55);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: #111;
+    }
+
+    .avatar-link img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 24px rgba(145, 70, 255, 0.75);
     }
 
     .hero {
-      padding: 80px 20px;
+      padding: 88px 20px 72px;
       text-align: center;
-      background: linear-gradient(180deg, #18181b, #0e0e10);
+      background: linear-gradient(180deg, #18181b 0%, #101014 55%, #0e0e10 100%);
     }
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
+    .hero h1 {
+      font-size: 52px;
+      margin: 0;
+      line-height: 1.05;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-      gap: 20px;
-      margin-top: 20px;
+    .hero-sub {
+      color: var(--purple-2);
+      font-size: 20px;
+      margin-top: 12px;
     }
 
-    .card {
-      background: #18181b;
-      padding: 20px;
-      border-radius: 12px;
-      transition: 0.2s;
+    .hero p {
+      max-width: 700px;
+      margin: 22px auto 0;
+      line-height: 1.7;
+      font-size: 18px;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
-      background: #1f1f23;
+    .nowrap-highlight {
+      white-space: nowrap;
+      color: var(--purple-2);
+      font-weight: bold;
     }
 
-    .btn {
-      background: #9146FF;
+    .main-btn {
+      background: var(--purple);
       padding: 16px 28px;
       border-radius: 12px;
       text-decoration: none;
       color: white;
       font-weight: bold;
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 26px;
       font-size: 16px;
-      transition: 0.2s;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: var(--shadow);
     }
 
-    .btn:hover {
-      transform: scale(1.05);
+    .main-btn:hover {
+      transform: translateY(-2px) scale(1.03);
       background: #7d3cff;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 42px 20px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      padding: 22px;
+      border-radius: var(--radius);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: var(--bg-soft-2);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .card p {
+      margin: 0;
+      line-height: 1.65;
+      color: #ddd;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    .stat-card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .stat-note {
+      color: #d0d0d0;
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .status-live {
+      color: var(--green);
+    }
+
+    .status-offline {
+      color: #ffb347;
+    }
+
+    .platforms {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 20px;
     }
 
     .platforms a {
@@ -94,45 +235,117 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .platforms a:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    .twitch-btn { background: var(--purple); color: white; }
+    .youtube-btn { background: var(--youtube); color: white; }
+    .kick-btn { background: var(--green); color: black; }
+
+    .video-card {
+      background: var(--bg-soft);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-top: 12px;
+    }
+
+    .video-card a {
+      color: var(--purple-2);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .video-card a:hover {
+      text-decoration: underline;
+    }
+
+    .player-wrap {
+      margin-top: 18px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #000;
+    }
+
+    iframe {
+      display: block;
+      border: 0;
+    }
+
+    .about-text {
+      line-height: 1.8;
+      color: #e0e0e0;
+    }
+
+    .seo-block {
+      margin-top: 18px;
+      color: #d5d5d5;
+      line-height: 1.8;
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid var(--purple);
+      padding: 18px 18px 18px 20px;
+      border-radius: 10px;
     }
 
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 24px 20px 34px;
       color: #777;
     }
-  </style>
 
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 100px;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .avatar-link img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- HERO -->
+  <a class="avatar-link" href="https://www.twitch.tv/akutsu_tv" target="_blank" aria-label="Ir para a Twitch do Akutsu TV">
+    <img src="avatar" alt="Avatar do Akutsu TV">
+  </a>
+
   <div class="hero">
-    <h1 style="font-size: 48px; margin: 0;">Akutsu TV</h1>
+    <h1>Akutsu TV</h1>
 
-    <p style="color:#a970ff; font-size:20px; margin-top:10px;">
+    <div class="hero-sub">
       RuneScape 3 Brasil | AkutsuTV | Akutsu_TV
-    </p>
+    </div>
 
-    <p style="max-width:650px; margin:20px auto; line-height:1.6; font-size:17px;">
+    <p>
       Akutsu TV é um streamer brasileiro focado em RuneScape 3 (RS3).
-      <span style="white-space: nowrap; color:#a970ff; font-weight:bold;">
-        Lives frequentes
-      </span>
+      <span class="nowrap-highlight">Lives frequentes</span>
       com evolução de conta, money making, bosses, eventos e conteúdo para iniciantes e jogadores avançados.
     </p>
 
-    <a href="https://www.twitch.tv/akutsu_tv" target="_blank" class="btn">
+    <a href="https://www.twitch.tv/akutsu_tv" target="_blank" class="main-btn">
       🔴 Assistir LIVE na Twitch
     </a>
   </div>
 
-  <!-- CONTEÚDO -->
   <div class="container">
 
     <h2>🔥 Conteúdo de RuneScape 3</h2>
-
     <div class="grid">
       <div class="card">
         <h3>Iniciantes</h3>
@@ -155,19 +368,45 @@
       </div>
     </div>
 
-    <!-- PLATAFORMAS -->
-    <h2 style="margin-top:50px;">🌐 Plataformas</h2>
+    <h2 style="margin-top:50px;">📊 Status do canal</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Status da live</div>
+        <div class="stat-value status-offline">Online/Offline automático</div>
+        <div class="stat-note">
+          Para detectar isso automaticamente de forma confiável, precisa integrar a API da Twitch.
+          Por enquanto, o player abaixo continua sendo a forma mais segura de mostrar sua live.
+        </div>
+      </div>
 
-    <div class="platforms" style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
-      <a href="https://www.twitch.tv/akutsu_tv" target="_blank" style="background:#9146FF; color:white;">Twitch</a>
-      <a href="https://www.youtube.com/@akutsu_tv" target="_blank" style="background:#FF0000; color:white;">YouTube</a>
-      <a href="https://kick.com/akutsu-tv" target="_blank" style="background:#53FC18; color:black;">Kick</a>
+      <div class="stat-card">
+        <div class="stat-label">Seguidores</div>
+        <div class="stat-value">Contador automático</div>
+        <div class="stat-note">
+          Para puxar o número real de seguidores da Twitch, também precisa de API.
+          A seção já está pronta para receber isso depois.
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Último vídeo</div>
+        <div class="stat-value">Atualização automática</div>
+        <div class="stat-note">
+          Para mostrar o vídeo mais recente do YouTube sozinho, é necessário integrar a API do YouTube.
+          A estrutura abaixo já deixa isso organizado no site.
+        </div>
+      </div>
     </div>
 
-    <!-- TWITCH -->
-    <h2 style="margin-top:50px;">📺 Ao vivo agora</h2>
+    <h2 style="margin-top:50px;">🌐 Plataformas</h2>
+    <div class="platforms">
+      <a href="https://www.twitch.tv/akutsu_tv" target="_blank" class="twitch-btn">Twitch</a>
+      <a href="https://www.youtube.com/@akutsu_tv" target="_blank" class="youtube-btn">YouTube</a>
+      <a href="https://kick.com/akutsu-tv" target="_blank" class="kick-btn">Kick</a>
+    </div>
 
-    <div style="margin-top:20px; border-radius:12px; overflow:hidden;">
+    <h2 style="margin-top:50px;">📺 Ao vivo agora</h2>
+    <div class="player-wrap">
       <iframe
         src="https://player.twitch.tv/?channel=akutsu_tv&parent=akutsu.tv&parent=www.akutsu.tv"
         height="420"
@@ -176,15 +415,28 @@
       </iframe>
     </div>
 
-    <!-- SOBRE -->
-    <h2 style="margin-top:50px;">👤 Sobre o Akutsu TV</h2>
+    <h2 style="margin-top:50px;">🎥 Último vídeo</h2>
+    <div class="video-card">
+      <p style="margin-top:0;">
+        Essa área está pronta para virar automática com API do YouTube.
+      </p>
+      <p style="margin-bottom:0;">
+        Enquanto isso, você pode apontar para seu canal aqui:
+        <a href="https://www.youtube.com/@akutsu_tv" target="_blank">Ver canal no YouTube</a>
+      </p>
+    </div>
 
-    <p style="line-height:1.7;">
-      Akutsu TV (também conhecido como AkutsuTV ou Akutsu_TV) é um criador de conteúdo
-      dedicado ao RuneScape 3 no Brasil. O foco é trazer conteúdo consistente,
-      entretenimento e evolução dentro do jogo, com lives frequentes, money making,
+    <h2 style="margin-top:50px;">👤 Sobre o Akutsu TV</h2>
+    <p class="about-text">
+      Akutsu TV (também conhecido como AkutsuTV ou Akutsu_TV) é um criador de conteúdo dedicado ao RuneScape 3 no Brasil.
+      O foco é trazer conteúdo consistente, entretenimento e evolução dentro do jogo, com lives frequentes, money making,
       bosses e guias para a comunidade brasileira de RS3.
     </p>
+
+    <div class="seo-block">
+      Se você pesquisou por Akutsu TV, AkutsuTV, Akutsu_TV, RuneScape 3 Brasil, live de RS3, money making RS3,
+      bosses RS3 ou guia RuneScape 3, este é o site oficial do Akutsu TV, com links diretos para Twitch, YouTube e Kick.
+    </div>
 
   </div>
 

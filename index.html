@@ -441,7 +441,15 @@
   </footer>
 
   <script>
-  const YT_API_KEY = "SUA_API_KEY_AQUI";
+  const YT_API_KEY = "AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0";
+    const handle = "akutsu_tv";
+
+const channelRes = await fetch(
+  `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=${encodeURIComponent(handle)}&key=${YT_API_KEY}`
+);
+    const searchRes = await fetch(
+  `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(channelId)}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
+);
 
   async function loadTwitchData() {
     try {

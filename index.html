@@ -280,24 +280,6 @@
       background: #000;
     }
 
-    .mobile-live-btn {
-      display: none;
-      margin-top: 18px;
-    }
-
-    .mobile-live-btn a {
-      display: inline-block;
-      width: 100%;
-      text-align: center;
-      background: var(--purple);
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 16px 20px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-    }
-
     iframe {
       display: block;
       border: 0;
@@ -340,14 +322,6 @@
       .avatar-link img {
         width: 60px;
         height: 60px;
-      }
-
-      .player-wrap {
-        display: none;
-      }
-
-      .mobile-live-btn {
-        display: block;
       }
     }
   </style>
@@ -440,12 +414,6 @@
       </iframe>
     </div>
 
-    <div class="mobile-live-btn">
-      <a href="https://www.twitch.tv/akutsu_tv" target="_blank">
-        📱 Assistir na Twitch
-      </a>
-    </div>
-
     <h2 style="margin-top:50px;">🎥 Último vídeo</h2>
     <div class="video-card">
       <img id="latestVideoThumb" class="thumb" src="" alt="" style="display:none;">
@@ -514,18 +482,10 @@
       }
 
       try {
-        const handle = "akutsu_tv";
-
         const channelRes = await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=${encodeURIComponent(handle)}&key=${YT_API_KEY}`
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=@akutsu_tv&key=${YT_API_KEY}`
         );
-
         const channelData = await channelRes.json();
-        console.log("YouTube channelData:", channelData);
-
-        if (!channelRes.ok) {
-          throw new Error(channelData?.error?.message || "Erro ao consultar canal no YouTube");
-        }
 
         if (!channelData.items || !channelData.items.length) {
           throw new Error("Canal não encontrado");
@@ -535,15 +495,9 @@
         const channelId = channel.id;
 
         const searchRes = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(channelId)}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
         );
-
         const searchData = await searchRes.json();
-        console.log("YouTube searchData:", searchData);
-
-        if (!searchRes.ok) {
-          throw new Error(searchData?.error?.message || "Erro ao consultar vídeos no YouTube");
-        }
 
         if (!searchData.items || !searchData.items.length) {
           throw new Error("Nenhum vídeo encontrado");
@@ -569,9 +523,8 @@
         linkEl.href = videoUrl;
         linkEl.textContent = "Assistir último vídeo no YouTube";
       } catch (error) {
-        console.error("Erro YouTube:", error);
         document.getElementById("latestVideoTitle").textContent = "Indisponível";
-        document.getElementById("latestVideoMeta").textContent = error.message;
+        document.getElementById("latestVideoMeta").textContent = "Não foi possível consultar o YouTube agora.";
       }
     }
 

@@ -441,96 +441,96 @@
   </footer>
 
   <script>
-    const YT_API_KEY = "AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0";
+  const YT_API_KEY = "SUA_API_KEY_AQUI";
 
-    async function loadTwitchData() {
-      try {
-        const res = await fetch("/api/twitch-status");
-        if (!res.ok) throw new Error("Falha ao consultar Twitch");
-        const data = await res.json();
+  async function loadTwitchData() {
+    try {
+      const res = await fetch("/api/twitch-status");
+      if (!res.ok) throw new Error("Falha ao consultar Twitch");
+      const data = await res.json();
 
-        const liveStatus = document.getElementById("liveStatus");
-        const liveNote = document.getElementById("liveNote");
-        const followersCount = document.getElementById("followersCount");
+      const liveStatus = document.getElementById("liveStatus");
+      const liveNote = document.getElementById("liveNote");
+      const followersCount = document.getElementById("followersCount");
 
-        if (data.live) {
-          liveStatus.textContent = "ONLINE";
-          liveStatus.className = "stat-value status-live";
-          liveNote.textContent = data.title || "Live ao vivo agora na Twitch.";
-        } else {
-          liveStatus.textContent = "OFFLINE";
-          liveStatus.className = "stat-value status-offline";
-          liveNote.textContent = "No momento, a live está offline.";
-        }
-
-        followersCount.textContent = typeof data.followers === "number"
-          ? data.followers.toLocaleString("pt-BR")
-          : "Indisponível";
-      } catch (error) {
-        document.getElementById("liveStatus").textContent = "Indisponível";
-        document.getElementById("liveStatus").className = "stat-value status-offline";
-        document.getElementById("liveNote").textContent = "Não foi possível consultar a Twitch agora.";
-        document.getElementById("followersCount").textContent = "Indisponível";
+      if (data.live) {
+        liveStatus.textContent = "ONLINE";
+        liveStatus.className = "stat-value status-live";
+        liveNote.textContent = data.title || "Live ao vivo agora na Twitch.";
+      } else {
+        liveStatus.textContent = "OFFLINE";
+        liveStatus.className = "stat-value status-offline";
+        liveNote.textContent = "No momento, a live está offline.";
       }
+
+      followersCount.textContent = typeof data.followers === "number"
+        ? data.followers.toLocaleString("pt-BR")
+        : "Indisponível";
+    } catch (error) {
+      document.getElementById("liveStatus").textContent = "Indisponível";
+      document.getElementById("liveStatus").className = "stat-value status-offline";
+      document.getElementById("liveNote").textContent = "Não foi possível consultar a Twitch agora.";
+      document.getElementById("followersCount").textContent = "Indisponível";
+    }
+  }
+
+  async function loadYouTubeData() {
+    if (!YT_API_KEY || YT_API_KEY.includes("AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0")) {
+      document.getElementById("latestVideoTitle").textContent = "Configure a API key";
+      document.getElementById("latestVideoMeta").textContent = "Adicione sua YouTube API key no código.";
+      return;
     }
 
-    async function loadYouTubeData() {
-      if (!YT_API_KEY || YT_API_KEY.includes("AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0")) {
-        document.getElementById("latestVideoTitle").textContent = "Configure a API key";
-        document.getElementById("latestVideoMeta").textContent = "Adicione sua YouTube API key no código.";
-        return;
+    try {
+      const channelRes = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=@akutsu_tv&key=${YT_API_KEY}`
+      );
+      const channelData = await channelRes.json();
+
+      if (!channelData.items || !channelData.items.length) {
+        throw new Error("Canal não encontrado");
       }
 
-      try {
-        const channelRes = await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=@akutsu_tv&key=${YT_API_KEY}`
-        );
-        const channelData = await channelRes.json();
+      const channel = channelData.items[0];
+      const channelId = channel.id;
 
-        if (!channelData.items || !channelData.items.length) {
-          throw new Error("Canal não encontrado");
-        }
+      const searchRes = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
+      );
+      const searchData = await searchRes.json();
 
-        const channel = channelData.items[0];
-        const channelId = channel.id;
-
-        const searchRes = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=1&key=${YT_API_KEY}`
-        );
-        const searchData = await searchRes.json();
-
-        if (!searchData.items || !searchData.items.length) {
-          throw new Error("Nenhum vídeo encontrado");
-        }
-
-        const video = searchData.items[0];
-        const title = video.snippet.title;
-        const publishedAt = new Date(video.snippet.publishedAt);
-        const thumb = video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url || "";
-        const videoId = video.id.videoId;
-        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-        document.getElementById("latestVideoTitle").textContent = title;
-        document.getElementById("latestVideoMeta").textContent =
-          `Publicado em ${publishedAt.toLocaleDateString("pt-BR")}`;
-
-        const thumbEl = document.getElementById("latestVideoThumb");
-        thumbEl.src = thumb;
-        thumbEl.alt = title;
-        thumbEl.style.display = thumb ? "block" : "none";
-
-        const linkEl = document.getElementById("latestVideoLink");
-        linkEl.href = videoUrl;
-        linkEl.textContent = "Assistir último vídeo no YouTube";
-      } catch (error) {
-        document.getElementById("latestVideoTitle").textContent = "Indisponível";
-        document.getElementById("latestVideoMeta").textContent = "Não foi possível consultar o YouTube agora.";
+      if (!searchData.items || !searchData.items.length) {
+        throw new Error("Nenhum vídeo encontrado");
       }
+
+      const video = searchData.items[0];
+      const title = video.snippet.title;
+      const publishedAt = new Date(video.snippet.publishedAt);
+      const thumb = video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url || "";
+      const videoId = video.id.videoId;
+      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+      document.getElementById("latestVideoTitle").textContent = title;
+      document.getElementById("latestVideoMeta").textContent =
+        `Publicado em ${publishedAt.toLocaleDateString("pt-BR")}`;
+
+      const thumbEl = document.getElementById("latestVideoThumb");
+      thumbEl.src = thumb;
+      thumbEl.alt = title;
+      thumbEl.style.display = thumb ? "block" : "none";
+
+      const linkEl = document.getElementById("latestVideoLink");
+      linkEl.href = videoUrl;
+      linkEl.textContent = "Assistir último vídeo no YouTube";
+    } catch (error) {
+      document.getElementById("latestVideoTitle").textContent = "Indisponível";
+      document.getElementById("latestVideoMeta").textContent = "Não foi possível consultar o YouTube agora.";
     }
+  }
 
-    loadTwitchData();
-    loadYouTubeData();
-  </script>
+  loadTwitchData();
+  loadYouTubeData();
+</script>
 
 </body>
 </html>

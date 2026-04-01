@@ -443,6 +443,8 @@
   <script>
     const YT_API_KEY = "COLOQUE_SUA_API_KEY_AQUI";
 
+    if (!YT_API_KEY || YT_API_KEY.includes("AIzaSyC_fypYGn61kPWOOPQcfeu5lE7xF82_Ou0")) {
+
     async function loadTwitchData() {
       try {
         const res = await fetch("/api/twitch-status");
